@@ -90,31 +90,31 @@ app.member= (function(){
                 '<input type="password" id="password" class="password" placeholder="비밀번호를 입력하세요" />'
             );
         $('#id').css({
-            'width':'100%',
+            'width':'80%',
             'height':'50px',
-            'margin-top':'50px'
+            'margin-top':'50px',
+            'margin-left':'50px'
         });
         $('#password').css({
-            'width':'100%',
+            'width':'80%',
             'height':'50px',
-            'margin-top':'20px'
+            'margin-top':'20px',
+            'margin-left':'50px'
         });
         $('#content').append(app.compUI.btn('signin-btn'));
         $('#content').append(app.compUI.btn('signup-btn'));
         $('#signin-btn')
             .text('로그인')
+            .addClass('btn btn-default')
             .css({
-                'width':'100%',
-                'height':'50px',
-                'margin-top':'20px'
-            });
+            'margin':'30px auto',
+            'margin-left':'50px',
+            'margin-right':'20px'});
         $('#signup-btn')
             .text('회원가입')
+            .addClass('btn btn-default')
             .css({
-                'width':'100%',
-                'height':'50px',
-                'margin-top':'20px'
-            });
+                'margin':'10px auto'});
     };
     return{onCreate:onCreate};
 })();
@@ -123,7 +123,6 @@ app.reservation = (function(){
         setContentView();
     };
     var setContentView = function(){
-        $('#content').empty();
         $('#content')
             .html('<h1> 예약 관리 </h1></br>')
             .css({
@@ -137,40 +136,22 @@ app.reservation = (function(){
         $.each(arr,(i,j)=>{
             table += '<tr style="height:25px; width:50px">';
             $.each(arr,(d,c)=>{
-                table += '<td style="width:10% ; text-align: center;">' + arr[i] + '' + (d+1) + '</td>';
+                table += '<td style="width:10% ; text-align: center;" onclick="app.reservation.select('+'\''+arr[i]+(d+1)+'\')">' + arr[i] + '' + (d+1) + '</td>';
             });
         });
         table += '</tr></table>';
         $('#content').append(table);
-        /* $('#tbl').css({
-                     'border':'1px black solid',
-                     'border-collapse' : 'collapse',
-                     'width':'80%',
-                     'height':'100%',
-                     'margin':'0 auto'
-                     });
-         $('tr').css({
-                     'width':'100%',
-                     'height':'20%',
-                     'text-align':'center'
-         });
-         $('td').css({
-                     'background-color':'#A0EDE6',
-                     'border':'1px black solid',
-                     'width':'20%',
-                     'height':'30px'
-         });*/
-
-
     };
-    return {onCreate:onCreate};
+    var select = x=> {
+        alert('예매된 도시는 ' + app.cookie.getCookie('dest') + '이고, 좌석번호는 '+ x +'임!');
+    };
+    return {onCreate:onCreate,select:select};
 })();
 app.destination =(function(){
     var onCreate =function(){
         setContentView();
     };
     var setContentView =function(){
-        $('#content').empty();
         $('#content')
             .html(
                 '<h1> 리스트 </h1></br>'
@@ -184,18 +165,48 @@ app.destination =(function(){
         var arr = ['서울','런던','도쿄','파리','제주'];
         var des = '<ul class="list-group">\n';
         $.each(arr,(i,j)=>{
-            des += '<li id="'+i+'" class="list-group-item"><a onclick="app.destination.plz('+arr[i]+')">'+arr[i]+'</a></li>\n';
+            des += '<li id="'+i+'" class="list-group-item"><a onclick="app.destination.select('+'\''+arr[i]+'\')">'+arr[i]+'</a></li>\n';
 
         });
         des += '</ul>';
         $('#content').append(des);
 
+        $('#content').append(app.compUI.btn('map-btn'));
+        $('#map-btn')
+            .text('도시 지도 보기')
+            .addClass('btn btn-default')
+            ;
     };
-    var plz=x=> {
+    var select=x=> {
         alert(x);
+        app.cookie.setCookie('dest',x);
+        app.reservation.onCreate();
     };
-    return {onCreate :onCreate, plz:plz};
+    return {onCreate :onCreate, select:select};
 })();
+app.cookie={
+    setCookie : (k,v) =>{
+        document.cookie = k + "=" +v;
+    },
+    getCookie : k=>{
+        var x = k + "=";
+        var i = 0;
+        var arr = document.cookie.split(';');
+        for(i=0;i<arr.length;i++){
+            var j = arr[i];
+            while(j.charAt(0)==''){
+                j = j.substring(1,j.length)
+            }
+            if(j.indexOf(x)==0){
+                return j.substring(x.length,j.length);
+            }
+            return null;
+        }
+    },
+    removeCookie : k=>{
+
+    }
+};
 app.compUI={
     br    :()=>{return $('<br/>');},
     div   : x=>{return $('<div/>',{id:x});},
@@ -216,3 +227,4 @@ $(function(){
     app.initialize();
 });
 app.initialize();
+
