@@ -131,8 +131,7 @@ app.reservation = (function(){
                 'height':'100%',
                 'background-color':'white'
             });
-
-        /* $('#tbl').css({        var arr = ['A','B','C','D','E'];
+        var arr = ['A','B','C','D','E'];
         var table = '<table id="tbl" border=1 style="border-collapse:collapse; margin: 0 auto">';
 
         $.each(arr,(i,j)=>{
@@ -143,6 +142,7 @@ app.reservation = (function(){
         });
         table += '</tr></table>';
         $('#content').append(table);
+        /* $('#tbl').css({
                      'border':'1px black solid',
                      'border-collapse' : 'collapse',
                      'width':'80%',
