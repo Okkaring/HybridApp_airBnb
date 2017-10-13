@@ -141,6 +141,83 @@ app.reservation = (function(){
         });
         table += '</tr></table>';
         $('#content').append(table);
+        $('#content').append(app.compUI.btn('map-btn'));
+        $('#map-btn')
+            .text('도시 지도 보기')
+            .addClass('btn btn-default')
+            .css({
+                'margin':'30px auto'})
+        ;
+        $('#content').append(app.compUI.div('bulb')).css({'text-align':'center'});
+        $('#bulb').append(app.compUI.btn('bulb-on-btn'));
+        $('#bulb-on-btn')
+            .text('Turn On')
+            .addClass('btn btn-default')
+            .css({
+                'margin':'30px auto',
+                'margin-right':'20px'})
+        ;
+        $('#bulb').append(app.compUI.btn('bulb-off-btn'));
+        $('#bulb-off-btn')
+            .text('Turn Off')
+            .addClass('btn btn-default')
+            .css({
+                'margin':'30px auto',
+                'margin-right':'20px'})
+        ;
+        $('#content')
+            .append(app.compUI.div('bulb-img-box'))
+            .css({'text-align':'center'});
+        $('#bulb-img-box').append(app.compUI.image('bulb-img','https://www.w3schools.com/js/pic_bulboff.gif'));
+        $('#bulb-on-btn').click(e=>{
+            $('#bulb-img-box').html(app.compUI.image('bulb-img','https://www.w3schools.com/js/pic_bulbon.gif'));
+        });
+        $('#bulb-off-btn').click(e=>{
+            $('#bulb-img-box').html(app.compUI.image('bulb-img','https://www.w3schools.com/js/pic_bulboff.gif'));
+        });
+        $('#content').append(app.compUI.div('select-date'));
+        $('#select-date').append(app.compUI.div('calendar'));
+
+        $('#calendar').append(app.compUI.btn('select-date-btn'));
+        $('#select-date-btn')
+            .text('날짜 선택하기')
+            .addClass('btn btn-default')
+            .css({
+                'margin':'30px auto',
+                'margin-right':'20px'})
+            .click(e=>{
+            $('#calendar').datepicker({
+                language:"kr",
+                format: "yyyy-mm-dd",
+                startDate : "+0d",
+                endDate : "+3d",
+                todayHighlight: true,
+                autoclose : true
+            });
+        });
+        $('#content').append(app.compUI.div('select-time'));
+        $('#select-time').append(app.compUI.input('clock','text').addClass('timepicker'));
+
+        $('#select-time').append(app.compUI.btn('select-clock-btn'));
+        $('#select-clock-btn')
+            .text('시간 선택하기')
+            .addClass('btn btn-default')
+            .css({
+                'margin':'30px auto',
+                'margin-right':'20px'})
+            .click(e=>{
+                $('.timepicker').timepicker({
+                    timeFormat: 'h:mm p',
+                    interval: 60,
+                    minTime: '10',
+                    maxTime: '6:00pm',
+                    defaultTime: '11',
+                    startTime: '10:00',
+                    dynamic: false,
+                    dropdown: true,
+                    scrollbar: true
+                });
+            });
     };
     var select = x=> {
         alert('예매된 도시는 ' + app.cookie.getCookie('dest') + '이고, 좌석번호는 '+ x +'임!');
@@ -171,11 +248,7 @@ app.destination =(function(){
         des += '</ul>';
         $('#content').append(des);
 
-        $('#content').append(app.compUI.btn('map-btn'));
-        $('#map-btn')
-            .text('도시 지도 보기')
-            .addClass('btn btn-default')
-            ;
+
     };
     var select=x=> {
         alert(x);
@@ -184,6 +257,14 @@ app.destination =(function(){
     };
     return {onCreate :onCreate, select:select};
 })();
+app.bulb ={
+    bulbOn : e=>{
+
+    },
+    bulbOff : e=>{
+
+    }
+};
 app.cookie={
     setCookie : (k,v) =>{
         document.cookie = k + "=" +v;
