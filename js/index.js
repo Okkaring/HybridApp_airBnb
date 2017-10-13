@@ -175,6 +175,41 @@ app.reservation = (function(){
         $('#bulb-off-btn').click(e=>{
             $('#bulb-img-box').html(app.compUI.image('bulb-img','https://www.w3schools.com/js/pic_bulboff.gif'));
         });
+        $('#content').append('<br><h1>정규식 샘플</h1>');
+        $('#content').append(app.compUI.div('num-div'));
+        $('#num-div').append(app.compUI.input('only-num','text'));
+        $('#only-num').attr('placeholder','숫자만 입력');
+        $('#num-div').append(app.compUI.btn('test-num-btn'));
+        $('#test-num-btn')
+            .text('숫자 테스트')
+            .addClass('btn btn-default')
+            .click(e=>{
+                var flag = app.valid.isNumber($('#only-num').val()*1);
+                alert(flag);
+                if(flag){
+                    alert('입력하신 숫자는 : '+ $('#only-num').val());
+                }else{
+                    alert('숫자만 가능하다.');
+                    $('#only-num').val(''); //input에 입력된 값 새로고침
+                }
+            });
+
+        $('#content').append(app.compUI.div('pass-div'));
+        $('#pass-div').append(app.compUI.input('pass-val','password'));
+        $('#pass-val').attr('placeholder','영문 대소문자, 숫자만 가능 4~10자 사이');
+        $('#pass-div').append(app.compUI.btn('test-pass-btn'));
+        $('#test-pass-btn')
+            .text('비번 테스트')
+            .addClass('btn btn-default')
+            .click(e=>{
+                if(app.valid.pwChecker($('#pass-val').val())==='yes'){
+                    alert('조건 맞음. 비번은 : '+ $('#pass-val').val());
+                }else{
+                    alert('비밀번호 조건이 다르다.');
+                    $('#pass-val').val('');
+                }
+            });
+
         $('#content').append(app.compUI.div('select-date'));
         $('#select-date').append(app.compUI.div('calendar'));
 
@@ -263,6 +298,15 @@ app.bulb ={
     },
     bulbOff : e=>{
 
+    }
+};
+app.valid ={
+    isNumber : x=>{
+        return typeof x === 'number' && isFinite(x);
+    },
+    pwChecker : x=>{
+        var pw_regex = /^[0-9a-zA-Z]{4,10}$/;
+        return pw_regex.test(x)?"yes":"no";
     }
 };
 app.cookie={
